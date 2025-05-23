@@ -1,0 +1,661 @@
+﻿<Window x:Class="InkPad.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:InkPad"
+        mc:Ignorable="d"
+        Title="InkPad" Height="750" Width="1200"
+        Icon="/Images/logo.ico"
+        Loaded="Window_Loaded"
+        Background="{DynamicResource WindowBackgroundColor}" 
+        Foreground="{DynamicResource WindowForegroundColor}">
+
+    <Window.Resources>
+        <RotateTransform x:Key="Rotate90Transform" Angle="90"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <DataTemplate x:Key="TabHeaderTemplate">
+            <DockPanel LastChildFill="True" Width="{DynamicResource TabItemWidth}">
+                <Button DockPanel.Dock="Right"
+                Background="{DynamicResource TransparentBackground}"
+                BorderBrush="{DynamicResource TransparentBackground}"
+                Click="CloseTabButton_Click"
+                Padding="{DynamicResource PaddingTabHeader}"
+                Name="CircleButton" 
+                Visibility="Collapsed">
+                    <materialDesign:PackIcon Kind="Circle"
+                                     Width="{DynamicResource CircleWidth}"  
+                                     Height="{DynamicResource CircleHeight}"
+                                     VerticalAlignment="Center"
+                                     Foreground="{DynamicResource ButtonForegroundColor}"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource TransparentBackground}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource TransparentBackground}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button DockPanel.Dock="Right"
+                        Background="{DynamicResource TransparentBackground}"
+                        BorderBrush="{DynamicResource TransparentBackground}"
+                        Click="CloseTabButton_Click"
+                        Padding="{DynamicResource PaddingTabHeader}"
+                        Name="CloseButton">
+                    <materialDesign:PackIcon Kind="Close"
+                                     Width="{DynamicResource IconWidth}"  
+                                     Height="{DynamicResource IconHeight}"
+                                     VerticalAlignment="Center"
+                                     Foreground="{DynamicResource ButtonForegroundColor}"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource TransparentBackground}"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource TransparentBackground}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <TextBlock Text="{Binding}"
+                   VerticalAlignment="Center"
+                   Margin="{DynamicResource LeftMargin}"
+                   FontSize="{DynamicResource TextFontSize}"
+                   TextTrimming="CharacterEllipsis" 
+                   Foreground="{DynamicResource ButtonForegroundColor}"/>
+            </DockPanel>
+            <DataTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="CloseButton" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="CircleButton" Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource AncestorType=TabItem}}">
+                    <Setter TargetName="CircleButton" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="CloseButton" Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+
+        <Style TargetType="TabControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <DockPanel>
+                            <TabPanel 
+                                Name="HeaderPanel" 
+                                IsItemsHost="True"
+                                HorizontalAlignment="{DynamicResource LeftAlignment}"
+                                DockPanel.Dock="Top"/>
+                            <ContentPresenter 
+                                Name="PART_SelectedContentHost"
+                                ContentSource="SelectedContent"/>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="Width" Value="{DynamicResource TabItemWidth}"/>
+            <Setter Property="Height" Value="{DynamicResource TabItemHeight}"/>
+            <Setter Property="Background" Value="{DynamicResource TabColor}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TabColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border 
+                    Name="Border"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource ItemCornerRadius}">
+                            <ContentPresenter 
+                        x:Name="ContentSite"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource OverTabColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource OverTabColor}"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource OverTabColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource OverTabColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style TargetType="ToolBar">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolBar">
+                        <Border Background="{DynamicResource BackgroundColor}">
+                            <ItemsPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style> 
+    </Window.Resources>
+
+    <DockPanel>
+        <Grid Background="{DynamicResource PrimaryHueMidBrush}" DockPanel.Dock="Top" Height="{DynamicResource TabItemHeight}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <ToggleButton x:Name="ToggleFile"
+                      Content="File"
+                      FontWeight="Bold"
+                      Style="{DynamicResource MaterialDesignFlatButtonMenu}"/>
+                        <Popup Style="{DynamicResource CustomPopupStyle}"
+                       PlacementTarget="{Binding ElementName=ToggleFile}"
+                       Placement="Bottom"
+                       IsOpen="{Binding IsChecked, ElementName=ToggleFile}"
+                       StaysOpen="False">
+                            <StackPanel Style="{DynamicResource CustomStackPanelStyle}"
+                        Background="{DynamicResource PopupBackgroundColor}"
+                        Orientation="Vertical"
+                        Width="{DynamicResource StackPanleWidth}">
+                                <Button Content="New tab"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="NewTabButton_Click"/>
+                                <Button Content="New window"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="NewWindowButton_Click"/>
+                                <Button Content="Open"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="OpenButton_Click"/>
+                                <Button x:Name="SaveButton" 
+                            Content="Save"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="SaveButton_Click"
+                            IsEnabled="False"/>
+                                <Button x:Name="SaveAssButton" 
+                            Content="Save as"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="SaveAsButton_Click"
+                            IsEnabled="False"/>
+                                <Button x:Name="SaveAllButton"
+                            Content="Save all"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="SaveAllButton_Click"
+                            IsEnabled="False"/>
+                                <Separator Style="{DynamicResource CustomSeparatorStyle}"/>
+                                <Button x:Name="CloseButton"  Content="Close tab"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="CloseButton_Click"
+                            IsEnabled="False"/>
+                                <Button Content="Close window"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="CloseWindowButton_Click"/>
+                                <Button Content="Exit"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="ExitButton_Click"/>
+                            </StackPanel>
+                        </Popup>
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <ToggleButton x:Name="ToggleEdit"
+                          Content="Edit"
+                          FontWeight="Bold"
+                          Style="{DynamicResource MaterialDesignFlatButtonMenu}"/>
+                        <Popup Style="{DynamicResource CustomPopupStyle}"
+                   PlacementTarget="{Binding ElementName=ToggleEdit}"
+                   Placement="Bottom"
+                   IsOpen="{Binding IsChecked, ElementName=ToggleEdit}"
+                   StaysOpen="False">
+                            <StackPanel Style="{DynamicResource CustomStackPanelStyle}"
+                            Background="{DynamicResource PopupBackgroundColor}"
+                            Orientation="Vertical"
+                            Width="{DynamicResource StackPanleWidth}">
+                                <Button x:Name="UndoButton"
+                            Content="Undo"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="UndoButton_Click"
+                            IsEnabled="False"/>
+                                <Separator Style="{DynamicResource CustomSeparatorStyle}"/>
+                                <Button x:Name="CutButton" 
+                            Content="Cut"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="CutButton_Click"
+                            IsEnabled="False"/>
+                                <Button x:Name="CopyButton"
+                            Content="Copy"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="CopyButton_Click"
+                            IsEnabled="False"/>
+                                <Button x:Name="PasteButton"
+                            Content="Paste"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="PasteButton_Click"
+                            IsEnabled="False"/>
+                                <Button x:Name="DeleteButton"
+                            Content="Delete"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="DeleteButton_Click"
+                            IsEnabled="False"/>
+                                <Separator Style="{DynamicResource CustomSeparatorStyle}"/>
+                                <Button x:Name="SelectAllButton" 
+                            Content="Select all"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="SelectAllButton_Click"
+                            IsEnabled="False"/>
+                                <Button x:Name="TimeAndDateButton"
+                            Content="Time/Date"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="TimeAndDateButton_Click"
+                            IsEnabled="False"/>
+                            </StackPanel>
+                        </Popup>
+                    </Grid>
+
+                    <Grid Grid.Column="2">
+                        <ToggleButton x:Name="ToggleSearch"
+                          Content="Search"
+                          FontWeight="Bold"
+                          Style="{DynamicResource MaterialDesignFlatButtonMenu}"/>
+                        <Popup Style="{DynamicResource CustomPopupStyle}"
+                   PlacementTarget="{Binding ElementName=ToggleSearch}"
+                   Placement="Bottom"
+                   IsOpen="{Binding IsChecked, ElementName=ToggleSearch}"
+                   StaysOpen="False">
+                            <StackPanel Style="{DynamicResource CustomStackPanelStyle}"
+                            Background="{DynamicResource PopupBackgroundColor}"
+                            Orientation="Vertical"
+                            Width="{DynamicResource StackPanleWidth}">
+                                <Button x:Name="FindButton"
+                            Content="Find"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="FindButton_Click"
+                            IsEnabled="False"/>
+                                <Button x:Name="ReplaceButton"
+                            Content="Replace"
+                            Style="{DynamicResource CustomButtonStyle}"
+                            Foreground="{DynamicResource ButtonForegroundColor}"
+                            HorizontalAlignment="{DynamicResource LeftAlignment}"
+                            Click="ReplaceButton_Click"
+                            IsEnabled="False"/>
+                            </StackPanel>
+                        </Popup>
+                    </Grid>
+
+                    <Grid Grid.Column="4">
+                        <ToggleButton x:Name="ToggleSettings"
+                  Style="{DynamicResource MaterialDesignFlatButtonMenu}">
+                            <materialDesign:PackIcon Kind="Cog" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                        </ToggleButton>
+                        <Popup Style="{DynamicResource CustomPopupStyle}"
+                   PlacementTarget="{Binding ElementName=ToggleSettings}"
+                   IsOpen="{Binding IsChecked, ElementName=ToggleSettings}">
+                            <StackPanel Style="{DynamicResource CustomStackPanelStyle}">
+                                <Button Content="Rose theme"
+                        Style="{DynamicResource CustomButtonStyle}"
+                        Click="RoseThemeButton_Click"/>
+                                <Button Content="Purple theme"
+                        Style="{DynamicResource CustomButtonStyle}"
+                        Click="PurpleThemeButton_Click"/>
+                            </StackPanel>
+                        </Popup>
+                    </Grid>
+                </Grid>
+
+                <Separator DockPanel.Dock="Top" Style="{DynamicResource MaterialDesignSeparator}" Background="{DynamicResource ButtonForegroundColor}" Height="0.5"/>
+
+                <Grid Background="{DynamicResource PrimaryHueMidBrush}" DockPanel.Dock="Top" Height="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+            Style="{StaticResource MaterialDesignFlatButtonNoBackground}"
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="New"
+            Click="NewTabButton_Click">
+                        <materialDesign:PackIcon Kind="Add" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button Grid.Column="1"
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Open"
+            Click="OpenButton_Click">
+                        <materialDesign:PackIcon Kind="FolderOpenOutline" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="SaveShortcutButton" 
+            Grid.Column="2" 
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Save"
+            Click="SaveButton_Click"
+            IsEnabled="False">
+                        <materialDesign:PackIcon Kind="FileOutline" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="SaveAllShortcutButton"
+            Grid.Column="3" 
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Save all"
+            Click="SaveAllButton_Click"
+            IsEnabled="False">
+                        <materialDesign:PackIcon Kind="FileMultipleOutline" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="CloseShortcutButton"
+            Grid.Column="4" 
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Close"
+            Click="CloseButton_Click"
+            IsEnabled="False">
+                        <materialDesign:PackIcon Kind="FileDocumentRemoveOutline" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="CloseAllShortcutButton"
+            Grid.Column="5" 
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Close all"
+            Click="CloseAllTabsButton_Click"
+            IsEnabled="False">
+                        <materialDesign:PackIcon Kind="Close" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Separator Grid.Column="6"
+               Style="{DynamicResource CustomSeparatorShortcutStyle}"/>
+
+                    <Button x:Name="BoldShortcutButton"
+                    Grid.Column="7" 
+                    Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                    Foreground="{DynamicResource ButtonForegroundColor}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    ToolTip="Bold"
+                    Click="BoldButton_Click"
+                    IsEnabled="False">
+                        <materialDesign:PackIcon Kind="FormatBold" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="ItalicShortcutButton"
+                    Grid.Column="8" 
+                    Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                    Foreground="{DynamicResource ButtonForegroundColor}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    ToolTip="Italic"
+                    Click="ItalicButton_Click"
+                    IsEnabled="False">
+                        <materialDesign:PackIcon Kind="FormatItalic" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="UnderlineShortcutButton"
+                    Grid.Column="9" 
+                    Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                    Foreground="{DynamicResource ButtonForegroundColor}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    ToolTip="Underline"
+                    Click="UnderlineButton_Click"
+                    IsEnabled="False">
+                        <materialDesign:PackIcon Kind="FormatUnderline" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Separator Grid.Column="10"
+              Style="{DynamicResource CustomSeparatorShortcutStyle}"/>
+
+                    <Button x:Name="CutShortcutButton" 
+            Grid.Column="11" 
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Cut"
+            Click="CutButton_Click"
+            IsEnabled="False">
+                        <materialDesign:PackIcon Kind="ContentCut" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="CopyShortcutButton" Grid.Column="12" 
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Copy"
+            Click="CopyButton_Click"
+            IsEnabled="False">
+                        <materialDesign:PackIcon Kind="ContentCopy" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="PasteShortcutButton" Grid.Column="13" 
+            Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+            Foreground="{DynamicResource ButtonForegroundColor}" 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            ToolTip="Paste"
+            Click="PasteButton_Click"
+            IsEnabled="False">
+                        <materialDesign:PackIcon Kind="ContentPaste" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Separator Grid.Column="14"
+              Style="{DynamicResource CustomSeparatorShortcutStyle}"/>
+
+                    <Button x:Name="UndoShortcutButton"
+                Grid.Column="15" 
+                Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                Foreground="{DynamicResource ButtonForegroundColor}" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ToolTip="Undo"
+                Click="UndoButton_Click"
+                IsEnabled="False">
+                        <materialDesign:PackIcon Kind="Undo" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="RedoShortcutButton"
+                Grid.Column="16" 
+                Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                Foreground="{DynamicResource ButtonForegroundColor}" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ToolTip="Redo"
+                Click="RedoButton_Click"
+                IsEnabled="False">
+                        <materialDesign:PackIcon Kind="Redo" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Separator Grid.Column="17"
+               Style="{DynamicResource CustomSeparatorShortcutStyle}"/>
+
+                    <Button x:Name="FindShortcutButton"
+                Grid.Column="18" 
+                Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                Foreground="{DynamicResource ButtonForegroundColor}" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ToolTip="Find"
+                Click="FindButton_Click"
+                IsEnabled="False">
+                        <materialDesign:PackIcon Kind="Magnify" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="ReplaceShortcutButton"
+                Grid.Column="19" 
+                Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                Foreground="{DynamicResource ButtonForegroundColor}" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ToolTip="Replace"
+                Click="ReplaceButton_Click"
+                IsEnabled="False">
+                        <materialDesign:PackIcon Kind="FormatColorText" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Separator Grid.Column="20"
+              Style="{DynamicResource CustomSeparatorShortcutStyle}"/>
+
+                    <Button x:Name="ZoomInShortcutButton"
+                Grid.Column="21" 
+                Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                Foreground="{DynamicResource ButtonForegroundColor}" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ToolTip="Zoom in"
+                Click="ZoomInButton_Click"
+                IsEnabled="False">
+                        <materialDesign:PackIcon Kind="MagnifyPlusOutline" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+
+                    <Button x:Name="ZoomOutShortcutButton"
+                Grid.Column="22" 
+                Style="{DynamicResource MaterialDesignFlatButtonNoBackground}" 
+                Foreground="{DynamicResource ButtonForegroundColor}" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ToolTip="Zoom out"
+                Click="ZoomOutButton_Click"
+                IsEnabled="False">
+                        <materialDesign:PackIcon Kind="MagnifyMinusOutline" Width="{DynamicResource ButtonWidth}" Height="{DynamicResource ButtonHeight}"/>
+                    </Button>
+                </Grid>
+
+        <Grid Background="{DynamicResource PrimaryHueMidBrush}" DockPanel.Dock="Top" Height="30" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+
+            <ComboBox x:Name="FontComboBox" 
+              Grid.Column="0"
+              Width="{DynamicResource ComboBoxChangeFontWidth}" 
+              Style="{StaticResource MaterialDesignComboBox}"
+              Margin="{DynamicResource LeftComboMargin}"
+              SelectionChanged="FontComboBox_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontFamily="{Binding}" FontSize="13"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <ComboBox x:Name="FontSizeComboBox"
+              Grid.Column="2"
+              Width="{DynamicResource ComboBoxChangeSizeWidth}"
+              Style="{StaticResource MaterialDesignComboBox}" 
+              SelectionChanged="FontSizeComboBox_SelectionChanged">
+            </ComboBox>
+
+        </Grid>
+
+        <Grid Background="{DynamicResource BackgroundColor}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TabControl x:Name="EditorTabControl"
+                Grid.Row="1"
+                Background="{DynamicResource BackgroundColor}"
+                Padding="{DynamicResource TabPadding}"
+                FontSize="{DynamicResource ButtonFontSize}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />
+        </Grid>
+    </DockPanel>
+</Window>

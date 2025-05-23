@@ -1,0 +1,44 @@
+﻿<Window x:Class="InkPad.FindReplaceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding TitleText}" Height="180" Width="350"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" Background="{DynamicResource BackgroundColor}"
+        MouseDown="Window_MouseDown">
+    <Border  
+            BorderBrush="{StaticResource TabColor}"
+            BorderThickness="{DynamicResource MessageBoxBorder}" 
+            CornerRadius="{StaticResource MessageBoxCornerRadius}">
+
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Button Click="Close_Click"
+                Grid.Row="0"
+                Style="{StaticResource MessageBoxCloseButtonStyle}" />
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="{DynamicResource MessageTextLineMargin}">
+                <TextBlock Text="Find:" FontSize="{DynamicResource FindReplaceFontSize}" Width="{DynamicResource TextLineFindWidth}" VerticalAlignment="Center"/>
+                <Border Style="{StaticResource TextBoxBorderStyle}">
+                    <TextBox x:Name="PatternTextBox" Width="{DynamicResource TextLineReplaceWidth}"/>
+                </Border>
+            </StackPanel>
+            <StackPanel x:Name="ReplacePanel" Orientation="Horizontal" Grid.Row="2" Margin="{DynamicResource MessageTextLineMargin}">
+                <TextBlock Text="Replace:" FontSize="{DynamicResource FindReplaceFontSize}" Width="{DynamicResource TextLineFindWidth}" VerticalAlignment="{x:Static VerticalAlignment.Center}"/>
+                <Border Style="{StaticResource TextBoxBorderStyle}">
+                    <TextBox x:Name="ReplaceTextBox" Width="{DynamicResource TextLineReplaceWidth}"/>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="{x:Static HorizontalAlignment.Right}">
+                <Button x:Name="FindButton" Margin="{DynamicResource FindButtonsMargin}" Content="Find" Click="Find_Click" Style="{StaticResource MessageBoxButtonStyle}"/>
+                <Button x:Name="ReplaceButton" Margin="{DynamicResource ReplaceButtonsMargin}" Content="Replace" Click="Replace_Click" Style="{StaticResource MessageBoxButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
+

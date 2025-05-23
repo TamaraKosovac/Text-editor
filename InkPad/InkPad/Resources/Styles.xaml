@@ -1,0 +1,241 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <x:Static x:Key="LeftAlignment" Member="HorizontalAlignment.Left"/>
+    <x:Static x:Key="RightAlignment" Member="HorizontalAlignment.Right"/>
+    <x:Static x:Key="CenterHorizontalAlignment" Member="HorizontalAlignment.Center"/>
+    <CornerRadius x:Key="ItemCornerRadius">5</CornerRadius>
+    <sys:Double x:Key="StackPanelWidth" >150</sys:Double>
+    <sys:Double x:Key="ButtonFontSize">14</sys:Double>
+    <sys:Double x:Key="PopupFontSize">12</sys:Double>
+    <Thickness x:Key="PaddingTabHeader">8</Thickness>
+    <sys:Double x:Key="CirclWidth">8</sys:Double>
+    <sys:Double x:Key="CircleHeight">8</sys:Double>
+    <sys:Double x:Key="IconWidth">16</sys:Double>
+    <sys:Double x:Key="IconHeight">16</sys:Double>
+    <sys:Double x:Key="TabItemWidth">150</sys:Double>
+    <sys:Double x:Key="TabItemHeight">30</sys:Double>
+    <sys:Double x:Key="TextFontSize">13</sys:Double>
+    <Thickness x:Key="LeftMargin">10,0,0,0</Thickness>
+    <sys:Double x:Key="ButtonWidth">20</sys:Double>
+    <sys:Double x:Key="ButtonHeight">20</sys:Double>
+    <Thickness x:Key="ButtonPadding">8</Thickness>
+    <Thickness x:Key="TabPadding">5</Thickness>
+    <sys:Double x:Key="ComboBoxChangeFontWidth">100</sys:Double>
+    <sys:Double x:Key="ComboBoxChangeSizeWidth">50</sys:Double>
+    <Thickness x:Key="LeftComboMargin">15,0,0,0</Thickness>
+    <CornerRadius x:Key="MessageBoxCornerRadius">12</CornerRadius>
+    <sys:Double x:Key="MessageBoxFontSize">18</sys:Double>
+    <sys:Double x:Key="FindReplaceFontSize">14</sys:Double>
+    <sys:Double x:Key="MessageBoxButtonWidth">70</sys:Double>
+    <sys:Double x:Key="MessageBoxButtonHeight">30</sys:Double>
+    <Thickness x:Key="MessageBoxMargin">10</Thickness>
+    <sys:Double x:Key="AlertIcon">30</sys:Double>
+    <Thickness x:Key="MessageMargin">0,10,0,0</Thickness>
+    <Thickness x:Key="AlertIconMargin">100,0,0,10</Thickness>
+    <Thickness x:Key="MessageBoxBorder">1</Thickness>
+    <sys:Double x:Key="TextLineReplaceWidth">250</sys:Double>
+    <sys:Double x:Key="TextLineFindWidth">60</sys:Double>
+    <Thickness x:Key="MessageTextLineMargin">0,0,0,10</Thickness>
+    <x:Static x:Key="CenterAlignment" Member="VerticalAlignment.Center"/>
+    <Thickness x:Key="FindButtonsMargin">0,40,0,0</Thickness>
+    <Thickness x:Key="ReplaceButtonsMargin">0,15,0,0</Thickness>
+    <Thickness x:Key="OkMessageMargin">10,10,10,10</Thickness>
+
+    <Style x:Key="MessageBoxCloseButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,5,20"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <materialDesign:PackIcon x:Name="CloseIcon"
+                                             Kind="Close"
+                                             Width="{DynamicResource IconWidth}"  
+                                             Height="{DynamicResource IconHeight}"
+                                             VerticalAlignment="Center"
+                                             Foreground="{DynamicResource ButtonForegroundColor}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CloseIcon" Property="Foreground" Value="Black"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+    <Style x:Key="MessageBoxButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="{StaticResource MessageBoxButtonWidth}"/>
+        <Setter Property="Height" Value="{StaticResource MessageBoxButtonHeight}"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Background" Value="{StaticResource TabColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TabColor}"/>
+        <Setter Property="BorderThickness" Value="0.2"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                        CornerRadius="5"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource OverTabColor}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style TargetType="ToggleButton" x:Key="MaterialDesignFlatButtonMenu">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Margin" Value="15,0,15,0"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ButtonFontSize}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style TargetType="Button" x:Key="MaterialDesignFlatButtonNoBackground">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Margin" Value="15,0,15,0"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style TargetType="Popup" x:Key="CustomPopupStyle">
+        <Setter Property="Placement" Value="Bottom"/>
+        <Setter Property="StaysOpen" Value="False"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="CustomStackPanelStyle">
+        <Setter Property="Background" Value="{DynamicResource PopupBackgroundColor}"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="CustomButtonStyle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="{DynamicResource PopupFontSize}"/>
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Separator" x:Key="CustomSeparatorStyle">
+        <Setter Property="Background" Value="{DynamicResource ButtonForegroundColor}"/>
+        <Setter Property="Height" Value="0.5"/>
+    </Style>
+
+    <Style TargetType="Separator" x:Key="CustomSeparatorShortcutStyle">
+        <Setter Property="Margin" Value="5,5"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Background" Value="{DynamicResource ButtonForegroundColor}"/>
+        <Setter Property="LayoutTransform" Value="{DynamicResource Rotate90Transform}"/>
+    </Style>
+
+    <Style x:Key="CustomComboBoxStyle" TargetType="ComboBox">
+        <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+        <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Margin" Value="5,0" />
+        <Setter Property="Padding" Value="5,0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <ToggleButton x:Name="ToggleButton" 
+                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                  Content="{TemplateBinding SelectionBoxItem}"
+                                  IsChecked="{TemplateBinding IsDropDownOpen}"
+                                  Focusable="False" 
+                                  ClickMode="Press" 
+                                  Background="White"
+                                  BorderBrush="{TemplateBinding BorderBrush}" 
+                                  BorderThickness="1" />
+                        <Popup x:Name="DropDown" 
+                           IsOpen="{TemplateBinding IsDropDownOpen}" 
+                           Placement="Bottom" 
+                           AllowsTransparency="True" 
+                           Focusable="False" 
+                           PopupAnimation="Slide">
+                            <Border Background="White" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="1">
+                                <ListBox x:Name="ListBox" 
+                                     ItemsSource="{TemplateBinding ItemsSource}" 
+                                     SelectedItem="{TemplateBinding SelectedItem}" 
+                                     DisplayMemberPath="{TemplateBinding DisplayMemberPath}" 
+                                     BorderThickness="0" 
+                                     Background="White"                                   
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                     HorizontalAlignment="Stretch"/>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TextBoxBorderStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="Background" Value="White"/>
+    </Style>
+
+</ResourceDictionary>
