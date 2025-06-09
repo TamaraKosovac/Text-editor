@@ -1,4 +1,4 @@
-# InkPad - text editor
+# 🖊️ InkPad - text editor
 
 **InkPad** is a simple and practical text editor that offers users basic text editing capabilities.
 
