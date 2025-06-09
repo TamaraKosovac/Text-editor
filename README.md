@@ -2,7 +2,7 @@
 
 **InkPad** is a simple and practical text editor that offers users basic text editing capabilities.
 
-## User Guide
+## 📝 User Guide
 
 • The user is offered the following options through the **File** menu item options: opening a new tab, new window, opening an already existing file from the computer, options for saving a text file, closing tabs and windows and the option to exit the application.
 
@@ -65,3 +65,6 @@ By entering the desired pattern, the number of its appearance is obtained.
 Simple replacement of one part of the text with another is also possible.
 
 ![screenshot](Screenshots/picture11.png)
+
+## 📄 Reference to the detailed description
+Detailed description of the project can be found in the folder "Description".
