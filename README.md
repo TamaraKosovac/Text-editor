@@ -1,6 +1,6 @@
 # 🖊️ InkPad - text editor
 
-**InkPad** is a simple and practical text editor that offers users basic text editing capabilities.
+**InkPad** is a simple and practical text editor, developed at the university using C# and WPF. It offers users basic text editing capabilities in a user-friendly desktop environment.
 
 ## 📝 User Guide
 
