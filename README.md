@@ -1,67 +1,67 @@
-# InkPad - tekst editor
+# InkPad - text editor
 
-**InkPad** je jednostavan i praktičan tekst editor koji korisnicima nudi osnovne mogućnosti rada sa tekstom.
+**InkPad** is a simple and practical text editor that offers users basic text editing capabilities.
 
-## Korisničko uputstvo
+## User Guide
 
-• Korisniku se nude sljedeće mogućnosti kroz opcije **File** stavke menija: otvaranje novog taba, novog prozora, otvaranje već postojećeg fajla sa računara, opcije čuvanja tekstualnog fajla, zatvaranja taba i prozora, te opcija izlaska iz aplikacije.
+• The user is offered the following options through the **File** menu item options: opening a new tab, new window, opening an already existing file from the computer, options for saving a text file, closing tabs and windows and the option to exit the application.
 
  ![screenshot](Screenshots/picture1.png)
 
 
-• Kroz opcije **Edit** stavke menija korisnik može da vrati prethodni obrisani dio teksta, može da isiječe, kopira, nalijepi i obriše dio teksta, te može da selektuje čitav tekst i da ubaci trenutni datum i vrijeme.
+• Through the **Edit** options of the menu item, the user can restore the previously deleted part of the text, can cut, copy, paste and delete part of the text and can select the entire text and insert the current date and time.
 
  ![screenshot](Screenshots/picture2.png)
  
 
-• Kroz opcije **Search** stavke menija korisnik može da pronađe broj pojavljivanja određenog paterna, te da zamijeni određeni dio teksta sa željenim paternom.  
+• Through the **Search** options of the menu item, the user can find the number of occurrences of a certain pattern and replace a certain part of the text with the desired pattern.
 
  ![screenshot](Screenshots/picture3.png)
 
 
 
-Na selektovani tekst se može primijeniti željeni font i veličina fonta.
+The desired font and font size can be applied to the selected text.
 
 ![screenshot](Screenshots/picture4.png)
 
 
 
-Selektovani tekst se može podebljati, ukositi, te podvući.
+The selected text can be made bold, italic and underlined.
 
 ![screenshot](Screenshots/picture5.png)
 
 
 
-Korisnik može da ubrza svoj rad tako što će koristiti prečice iz donjeg dijela menija koje nudi aplikacija. U prečicama su dodatno ubačene mogućnosti: da se sačuvaju sve nesačuvane izmjene trenutno otvorenih fajlova, da se zatvore svi trenutno otvoreni fajlovi, te da korisnik uveća ili umanji tekst. Dodatno, u donjem lijevom uglu je dat osnovni prikaz trenutne pozicije unosa teksta. Korisnik dalje može da sačuva fajl na računar.
+The user can speed up his work by using shortcuts from the lower part of the menu offered by the application. In the shortcuts, additional options have been added: to save all unsaved changes of currently open files, to close all currently open files and for the user to enlarge or reduce the text. In addition, in the lower left corner is given a basic view of the current position of the text input. The user can then save the file to the computer.
 
 ![screenshot](Screenshots/picture6.png)
 
 
 
-Takođe, korisnik može da otvori već postojeći fajl sa računara.
+Also, the user can open an already existing file from the computer.
 
 ![screenshot](Screenshots/picture7.png)
 
 
 
-Omogućena je i promjena teme aplikacije.
+It is also possible to change the theme of the application.
 
 ![screenshot](Screenshots/picture8.png)
 
 
 
-Ukoliko se desi da korisnik izmijeni tekstualni fajl, a da ga potom ne sačuva, dobije obavijest gdje treba da odabere da li će da sačuva izmjene fajla ili da ih odbaci.
+If the user changes the text file without saving it, he gets a notification where he should choose whether to save the changes to the file or discard them.
 
 ![screenshot](Screenshots/picture9.png)
 
 
 
-Unosom željenog paterna dobija se broj njegovog pojavljivanja.
+By entering the desired pattern, the number of its appearance is obtained.
 
 ![screenshot](Screenshots/picture10.png)
 
 
 
-Omogućena je i jednostavna zamjena jednog dijela teksta sa nekim drugim.
+Simple replacement of one part of the text with another is also possible.
 
 ![screenshot](Screenshots/picture11.png)
